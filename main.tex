@@ -1,12 +1,30 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{hyperref}
 
-\title{STALGCM}
+\newtheorem{defn}{Definition}
+\newtheorem{ex}{Example}
+
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+\title{Theory of Computation}
 \author{Zhean Robby Ganituen}
 \date{March 2025}
 
 \begin{document}
 
 \maketitle
+
+\begin{itemize}
+    \item \hyperref[pumping_lemma_chapter]{Pumping Lemma}
+    \item Context-Free Grammars
+    \item The Pumping Lemma and Irregularity
+    \item Pushdown Automata
+\end{itemize}
+\include{chapters/pumping_lemma}
 
 \end{document}

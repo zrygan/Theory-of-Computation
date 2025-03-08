@@ -1,0 +1,44 @@
+\section{Pumping Lemma}
+\label{pumping_lemma_chapter}
+
+The \textbf{Pumping Lemma} is a \textit{lemma} that aims to describe \blue{property of all regular languages}. This property is that, for every string $s$ in any regular language $\mathcal{L}$ a middle substring in $s$ is \blue{pumpable}, that is, we can infinitely repeat that middle substring of $s$.
+
+Another way of saying this is that we have $s=s_1 s_2 \dots s_n$ and $\exists s_i\in s(s_i:s_1 \neq s_1 \vee s_1 \neq s_n)$ we can infinitely repeat this substring $s_i$, or $(s_i)^+$ and this new string will still be in $\mathcal{L}$.
+
+Take, for example the regular language of the regular expression \texttt{ab$^*$}. In this example, we can look at the second group in the regular expression \texttt{b$^*$} which means that \texttt{b$^*$} is $\lambda$, \texttt{b}, \texttt{b$\dots$b} where there are an arbitrary number of \texttt{b}. Therefore, the symbol \texttt{b} is pumpable, or we can say that \texttt{ab$^*$} $\equiv$ \texttt{ab$^i$b$^*$}, $\forall i \in \mathbb{Z}^+$.
+
+\paragraph{The Pumping Lemma.} 
+\label{pumping_lemma_defn}
+
+Let $\mathcal{L}$ be a regular language. Then, there exists an integer $p \geq 1$ that depends on $\mathcal{L}$ such that $\forall w\in \mathcal{L}$ and $|w| \geq p$, $w=xyz$ are a concatenation of three substrings $w,y,z$ which satisfy the following conditions:
+
+\begin{enumerate}
+    \item $|y|\geq  1$ (the length of substring $y$ is at least 1)
+    \item $|xy| \leq p$ (the length of the substring $xy$ is at most $p$)
+    \item $\forall n\geq 0,xy^nz\in \mathcal{L}$ (for every pumping of $y$ the string is still in $\mathcal{L}$)
+\end{enumerate}
+
+\paragraph{Formal Definition of Pumping Lemma}
+\label{pumping_lemma_formal}
+
+\begin{center}
+    \begin{tabular}{l}
+     $\forall \mathcal{L}\subseteq \Sigma^*, \mathcal{L} \textbf{ is regular} \Longrightarrow$  \\
+     $\quad \exists p\geq 1,\forall w\in \mathcal{L},|w|\geq p \Longrightarrow$ \\
+     $\quad\quad \exists x,y,z\in\Sigma^*,(w=xyz)\wedge (|y|\geq 1)\wedge (|xy|\leq p)\wedge \left(\forall n\geq 0,xy^nz\in \mathcal{L}\right)$
+\end{tabular}
+\end{center}
+
+So, the goal of the Pumping lemma is to \textit{ prove} that a language $\mathcal{L}$ is regular. But we can also use this lemma to \textit{disprove} that a language is regular, or to prove that a language is irregular.
+
+\subsection{Irregularity of a Language}.
+
+A language is \textbf{irregular} if and only if no Finite State Automata (\texttt{FSA}), regular expression (\texttt{RE}), or regular grammar (\texttt{RG}) recognizes that language. That is to say, 
+
+\[
+    \mathcal{L} \text{ is irregular} \leftrightarrow \forall M, L(M)\neq \mathcal{L} \text{ where $M$ is a regular formal system}
+\]
+
+So, we can prove that a language is irregular by attempting to construct a regular formal system for it and showing that it is \textit{impossible} to do so. However, we can also use the \textit{contrapositive} of the Pumping lemma as defined in \ref{pumping_lemma_defn} and \ref{pumping_lemma_formal}.
+
+
