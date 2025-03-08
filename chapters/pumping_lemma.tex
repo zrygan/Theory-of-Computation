@@ -62,7 +62,7 @@ Let $\mathcal{L}$ be any language, if the language $\mathcal{L}$ does not satisf
     
     Assume $\mathcal{L}$ is a regular. 
     
-    \noindent\textbf{Step 3: Pick $w$}
+    \textbf{Step 3: Pick $w$}
     
     Set $w$ to be the string $\texttt{a}^j \texttt{b}^j$ where $j+j=2j \geq p$ to meet criterion (1). 
     
@@ -106,7 +106,7 @@ Let $\mathcal{L}$ be any language, if the language $\mathcal{L}$ does not satisf
 \end{ex}
 
 \begin{proof}
-    $\mathcal{L}$ is irregular through proof of contradiction with the Pumping lemma: 
+    Through proof of contradiction with the Pumping lemma: 
     \begin{enumerate}
         \item $w=xyz, |w| \geq p$
         \item $y\geq 1, y\notin\lambda$
@@ -124,23 +124,66 @@ Let $\mathcal{L}$ be any language, if the language $\mathcal{L}$ does not satisf
     
     Since $w=xyz$ we need to determine substrings $x,y,z$ that when concatenated to each other, result in $w$. Furthermore, the length of $x,y$ or $|xy|\leq p$ and $p\notin \lambda$. Then,
     
-    \begin{center}
-        \begin{tabular}{llll}
-             $q^prq^p = $   & $\quad x$   & $\quad y$    & $\quad z$        \\
-                            & $\quad q^a$ & $\quad q^b$  & $\quad r q^p$  
-        \end{tabular}
-    \end{center}
+   \begin{alignat*}{4}
+        q^prq^p = & x  & y  & z \\
+                  & q^a & q^b &q^{(p-a-b)} r q^p
+    \end{alignat*}
     
-    This is the only possible combination of $w$ given the criteria (2). Since if $y$ spans all $q$'s and the $r$, and the number of $q$'s in $w$ are $p$. Then, the substring $xy=q^pr$ has size greater than $p$ because $|xy| =p+q\nleq p$
+    This is the only possible combination of $w$ given the criteria (2). Since if $y$ spans all $q$'s and the $r$, and the number of $q$'s in $w$ are $p$. Then, the substring $xy=q^pr$ has size greater than $p$ because $|xy| =p+1\nleq p$
     
-    Set $i$ to be a value that will contradict criterion (3). In this case, let's set $i=2$
+    Set $i$ to be a value that will contradict criterion (4). In this case, let's set $i=0$
     \begin{align*}
-        w & = xy^iz & \\
-          & = q^aq^{bi}rq^p & \textbf{let } i = 2 \\
-          & = q^aq^{2b}rq^p &
+        w & = xy^iz \\
+          & = q^aq^{i\cdot b}q^{(p-a-b)}rq^p,& \text{let } i = 0 \\
+          & = q^aq^{0}q^{2b}rq^p,& \text{recall: } \forall s,s^0s = s \\
+          & = q^a q^{(p-a-b)}rq^p
     \end{align*}
     
-    Since the number of $q$'s in the substring $xy = a+2b$ and the number of $q$'s in the substring $z = p=a+b$, it follows that this language is not regular.
+Since the number of $q$'s before $r$ are no longer equal, it is clear that $w\notin \mathcal{L}$. This completes the proof.
     
     Therefore, $\mathcal{L}$ is not regular.
+\end{proof}
+
+\begin{ex}
+    Show that $\mathcal{L} = \left\{a^nb^nc^n|n\geq 1\right\}$ is irregular.
+\end{ex}
+
+\begin{proof}
+    By contradiction and the Pumping lemma.
+
+    Assume $\mathcal{L}$ is regular, from the pumping lemma introduce the pumping length $p=n$ and:
+    \begin{itemize}
+        \item $w=xyz, |w| \geq p$
+        \item $y\neq \lambda$
+        \item $|xy|\leq p$
+        \item $\forall i\geq 0, xy^iz\in \mathcal{L}$
+    \end{itemize}
+
+    Then,
+    
+    \[
+        w = a^p b^p c^p
+    \]
+
+    Determine the substrings $x,y,z$ where $w=xyz$ from (1), that satisfy (2) and (3), in this case set $x,y,z$ to the following
+    
+    \begin{alignat*}{4}
+    w & = x &y & z \\
+      & = a^k &a^j & a^{p-k-j}b^pc^p
+    \end{alignat*}  
+
+
+    Note that $k+j = p$, now pump the substring $y$ for any $i$. Let $i = 2$ and $w=xy^iz$, show that (4) does not hold.
+
+    \begin{align*}
+    w & = a^k a^{i\cdot j}a^{(p-k-j)}b^pc^p,\quad k+j=p \\
+          & = a^k a^{2j}a^{(p-k-j)}b^pc^p \\
+          & = a^{(p-k-j+k+2j)}b^pc^p \\
+          & = a^{(p+j)}b^pc^p
+    \end{align*}
+
+    Notice that $w$ when $y$ is pumped twice, the number of $a$ $n_a=p+j$ which is not equal to the number of occurrences of $b$ or $c$ since $n_a=p+j>p=n_b=n_c$. Furthermore, $w$ is not in $\mathcal{L}$ since it does not meet the numerical constraints of $\mathcal{L}$.
+
+    We have shown that $\mathcal{L}$ is irregular.
+    
 \end{proof}
