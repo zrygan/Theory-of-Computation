@@ -5,9 +5,28 @@
 \usepackage{amsthm}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage[most]{tcolorbox}
+
+\setlength{\parskip}{0.5em}
 
 \newtheorem{defn}{Definition}
 \newtheorem{ex}{Example}
+
+\definecolor{cyanon20}{rgb}{0.0, 1.0, 1.0} % Define cyan color
+\newtcolorbox[]{zbox}[1][]{
+  colframe=black,                
+  colback=cyan!20,               
+  boxrule=0.2mm,                 
+  width=\textwidth,           
+  arc=2.5mm,
+  drop shadow,
+  left=2.5mm,                      
+  right=2.5mm,          
+  before skip = 5mm,
+  after skip = 5mm,
+  drop fuzzy shadow={0.8mm}{-0.8mm}{0.8mm},  
+  #1                            
+}
 
 \newcommand{\blue}[1]{{\color{blue} #1}}
 
@@ -19,12 +38,8 @@
 
 \maketitle
 
-\begin{itemize}
-    \item \hyperref[pumping_lemma_chapter]{Pumping Lemma}
-    \item Context-Free Grammars
-    \item The Pumping Lemma and Irregularity
-    \item Pushdown Automata
-\end{itemize}
+\tableofcontents
+
 \include{chapters/pumping_lemma}
 
 \end{document}

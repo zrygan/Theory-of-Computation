@@ -9,7 +9,6 @@ Take, for example the regular language of the regular expression \texttt{ab$^*$}
 
 \paragraph{The Pumping Lemma.} 
 \label{pumping_lemma_defn}
-
 Let $\mathcal{L}$ be a regular language. Then, there exists an integer $p \geq 1$ that depends on $\mathcal{L}$ such that $\forall w\in \mathcal{L}$ and $|w| \geq p$, $w=xyz$ are a concatenation of three substrings $w,y,z$ which satisfy the following conditions:
 
 \begin{enumerate}
@@ -20,10 +19,9 @@ Let $\mathcal{L}$ be a regular language. Then, there exists an integer $p \geq 1
 
 \paragraph{Formal Definition of Pumping Lemma}
 \label{pumping_lemma_formal}
-
 \begin{center}
     \begin{tabular}{l}
-     $\forall \mathcal{L}\subseteq \Sigma^*, \mathcal{L} \textbf{ is regular} \Longrightarrow$  \\
+     $\forall \mathcal{L}\subseteq \Sigma^*, \mathcal{L} \text{ is regular} \Longrightarrow$  \\
      $\quad \exists p\geq 1,\forall w\in \mathcal{L},|w|\geq p \Longrightarrow$ \\
      $\quad\quad \exists x,y,z\in\Sigma^*,(w=xyz)\wedge (|y|\geq 1)\wedge (|xy|\leq p)\wedge \left(\forall n\geq 0,xy^nz\in \mathcal{L}\right)$
 \end{tabular}
@@ -36,9 +34,113 @@ So, the goal of the Pumping lemma is to \textit{ prove} that a language $\mathca
 A language is \textbf{irregular} if and only if no Finite State Automata (\texttt{FSA}), regular expression (\texttt{RE}), or regular grammar (\texttt{RG}) recognizes that language. That is to say, 
 
 \[
-    \mathcal{L} \text{ is irregular} \leftrightarrow \forall M, L(M)\neq \mathcal{L} \text{ where $M$ is a regular formal system}
+    \mathcal{L} \text{ is irregular} \Longleftrightarrow \forall M, L(M)\neq \mathcal{L} \text{ where $M$ is a regular formal system}
 \]
 
-So, we can prove that a language is irregular by attempting to construct a regular formal system for it and showing that it is \textit{impossible} to do so. However, we can also use the \textit{contrapositive} of the Pumping lemma as defined in \ref{pumping_lemma_defn} and \ref{pumping_lemma_formal}.
+So, we can prove that a language is irregular by attempting to construct a regular formal system for it and showing that it is \textit{impossible} to do so. However, we can also use the \textit{contrapositive} of the \hyperref[pumping_lemma_defn]{Pumping lemma}.
 
+\paragraph{Contrapositive of the Pumping Lemma.}
 
+Let $\mathcal{L}$ be any language, if the language $\mathcal{L}$ does not satisfy \hyperref[pumping_lemma_defn]{Pumping lemma} it follows that $\mathcal{L}$ is an irregular language. Therefore, if we can \textit{prove} that $\mathcal{L}$ does not satisfy the Pumping lemma, then we prove that it is irregular.
+
+\begin{ex}
+    Show that $\mathcal{L} = \left\{\texttt{a$^n$b$^n$}, n\geq0\right\}$ is irregular where the occurrence of \texttt{a} and \texttt{b} are denoted by $n_a$ and $n_b$ respectively.
+\end{ex}
+
+\begin{proof}
+    $\mathcal{L}$ is irregular
+
+    \textbf{Step 1: State the Pumping lemma}
+    \begin{enumerate}
+        \item $w=xyz, |w| \geq p$
+        \item $y\geq 1, y\notin\lambda$
+        \item $|xy|\leq p$
+        \item $\forall i\geq 0, xy^iz\in\mathcal{L}$
+    \end{enumerate}
+    
+    \textbf{Step 2: Assume the contradiction is true}
+    
+    Assume $\mathcal{L}$ is a regular. 
+    
+    \noindent\textbf{Step 3: Pick $w$}
+    
+    Set $w$ to be the string $\texttt{a}^j \texttt{b}^j$ where $j+j=2j \geq p$ to meet criterion (1). 
+    
+    \textbf{Step 4: Determine $xyz=w$}
+    
+    From step 3 we need to deconstruct $w$ as a concatenation of three strings $x,y,z$ such that $|xy| \leq p$. Since, $2j\geq p$ we can say that $j=k+l$, then $2n=k+l+j \geq p$. Applying this to $\texttt{a}^jb^j$, we get $\texttt{a}^k \texttt{a}^l \texttt{b}^j$. Finally, we can set the following $x=\texttt{a}^k$, $y=\texttt{a}^l$, and $z=\texttt{b}^j$. 
+    
+    By doing so, we still meet the criteria (2) $y\notin \lambda$ because $y=\texttt{a}^l$; and (3) $|xy|\leq p$ because $|xy|=|\texttt{a}^k \texttt{a}^l|\leq p$ since $k+l=p$. 
+    
+    \textbf{Step 5: Determine for all pumps of $y$, $w\in \mathcal{L}$}
+    
+    Referring to criterion (4), we get $xy^iz = \texttt{a}^k \texttt{a}^{li} \texttt{b}^j$; we simply put the $i$ variable as a string repetition of $y$ and substituted the values of $x,y,z$ we got from step 4. 
+    
+    Let $i=0$, it follows that $\texttt{a}^k\texttt{a}^{l\times0}\texttt{b}^j$. Recall, $\forall s, s^0=1$ and $s\times1=s$. Since, $\texttt{a}^{l\times0}=a^1=1$, then $\texttt{a}^k\texttt{b}^j$. 
+    
+    From this, since we know that $j=k+l$ and the constraint $\mathcal{L}$ is that the number of occurrences of \texttt{a} is equal to \texttt{b}. But, for $i=0$ we get the string $\texttt{a}^k\textit{b}^j$, $n_a \neq n_b$ since $n_a = k$ and $n_b=j$. 
+    
+    This then completes the proof of contradiction, it is impossible for $\mathcal{L}$ to be regular. Therefore, $\mathcal{L}$ is irregular. 
+\end{proof}
+    
+\subsubsection{Proof of Irregularity}
+
+\begin{enumerate}
+    \item State the \hyperref[pumping_lemma_defn]{Pumping lemma}
+    \item Assume that $\mathcal{L}$ is regular
+    \item Create a string where the numerical quantifiers of the language are the pumping length $p$.
+    \item Let $w$ be this resulting string. 
+    \item Determine all combinations of $w$ that meet criteria (1) and (2) of the Pumping lemma.
+    \begin{itemize}
+        \item Reducing the complexity: by letting the substring $xy$ be a substring of one symbol $\in \Sigma$ we reduce the number of combinations to one.
+    \end{itemize}
+    \item Set $i$ to a value that will contradict criterion (3). 
+    \begin{itemize}
+        \item \textit{Brute-force}: Set $i$ to any valid value and determine if the resulting string $s\in \mathcal{L}$. If it is, repeat. Otherwise, conclude. 
+    \end{itemize}
+    \item State the conclusion, "therefore $\mathcal{L}$ is irregular".
+\end{enumerate}
+
+\begin{ex}
+    Show that $\mathcal{L}=\{q^nrq^n|n\in\mathbb{Z^+}\}$ is irregular.
+\end{ex}
+
+\begin{proof}
+    $\mathcal{L}$ is irregular through proof of contradiction with the Pumping lemma: 
+    \begin{enumerate}
+        \item $w=xyz, |w| \geq p$
+        \item $y\geq 1, y\notin\lambda$
+        \item $|xy|\leq p$
+        \item $\forall i\geq 0, xy^iz\in\mathcal{L}$
+    \end{enumerate}
+    
+    Assume $\mathcal{L}$ is regular.
+    
+    Let $n = p$ and let this new string be $w$, then
+    
+    \[
+    w = q^p r q^p
+    \]
+    
+    Since $w=xyz$ we need to determine substrings $x,y,z$ that when concatenated to each other, result in $w$. Furthermore, the length of $x,y$ or $|xy|\leq p$ and $p\notin \lambda$. Then,
+    
+    \begin{center}
+        \begin{tabular}{llll}
+             $q^prq^p = $   & $\quad x$   & $\quad y$    & $\quad z$        \\
+                            & $\quad q^a$ & $\quad q^b$  & $\quad r q^p$  
+        \end{tabular}
+    \end{center}
+    
+    This is the only possible combination of $w$ given the criteria (2). Since if $y$ spans all $q$'s and the $r$, and the number of $q$'s in $w$ are $p$. Then, the substring $xy=q^pr$ has size greater than $p$ because $|xy| =p+q\nleq p$
+    
+    Set $i$ to be a value that will contradict criterion (3). In this case, let's set $i=2$
+    \begin{align*}
+        w & = xy^iz & \\
+          & = q^aq^{bi}rq^p & \textbf{let } i = 2 \\
+          & = q^aq^{2b}rq^p &
+    \end{align*}
+    
+    Since the number of $q$'s in the substring $xy = a+2b$ and the number of $q$'s in the substring $z = p=a+b$, it follows that this language is not regular.
+    
+    Therefore, $\mathcal{L}$ is not regular.
+\end{proof}
