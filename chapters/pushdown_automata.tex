@@ -1,2 +1,152 @@
 \newcommand{\pda}{\texttt{PDA}}
 \section{Pushdown Automata (\pda)}
+
+Apart from \blue{\texttt{CFG}s}, a \pda\, can also model \blue{\texttt{CFL}}, it models \texttt{CFL}s by adding a \blue{stack} as a memory structure. This allows the \pda\, to recognize grammar structures given by \texttt{CFL}s.
+
+Take for instance the English sentence structure: \texttt{S-TV-IO-DO} (subject-verb agreement). A regular expression is incapable of recognizing sentences like this as it doesn't really know the concept of \texttt{S}, \texttt{TV}, \texttt{IO}, or \texttt{DO}. It simply knows that it can match a specific sequence of symbols.
+
+On the other hand, a \pda\, can recognize languages with more complex structures due to the stack.
+
+\subsection{Remembering the Stack}
+
+The \textbf{stack} is a Last-In-First-Out (LIFO) data structure. It has the following functions:
+\begin{itemize}
+    \item \textsc{Push}$(S,x)$: pushed an element $x$ to the \textit{top} of a stack $S$.
+    \item \textsc{Pop}$(S)$: removed and returns the element at the \textit{top} of the stack $S$.
+\end{itemize}
+
+\begin{ex}
+    Given the array: $S=[1,2,3(t)]$
+\end{ex}
+When we call the following commands, this is what happens to the stack $S$:
+\begin{center}
+    \begin{tabular}{ll}
+        \textsc{Push}$(S,9)$ & $S = [1,2,3,9(t)]$  \\
+        \textsc{Pop}$(S)$    & $S = [1,2,3(t)]$ \\
+        \textsc{Pop}$(S)$    & $S = [1,2(t)]$ \\
+        \textsc{Push}$(S,0)$    & $S = [1,2,0(t)]$ \\
+    \end{tabular}
+\end{center}
+
+\subsection{Pushdown Accepter}
+
+A \pda \, is a smarter version of a \texttt{FSM} because it uses the current input stimulus and the memory it has stored in its \blue{stack} to determine the next state. Through this, it can recognize patters that require \textit{keeping track past information}.
+
+For instance, suppose we want to make a machine that stores the occurrence of alphanumeric $n_a$ and non-alphanumeric $n_x$ characters in the string. A regular language is not capable of doing this, however a \pda\, can.
+
+This is an important idea of the \pda\, and non-regular languages (\ref{pumping_lemma_chapter}), these can model languages that have numerical constraints, or require memory or tracking.
+
+\paragraph{Formal Definition of a \pda.} It is given by the 7-tuple
+\[
+    M=(Q,\Sigma,\Gamma, \delta, q_i, z_i, Q_f)
+\]
+
+Where,
+\begin{itemize}
+    \item $Q$ is a finite set of states.
+    \item $\Sigma$ is the finite set of input symbols (stimuli).
+    \item $\Gamma$ is the finite set of stack symbols.
+    \item $\delta$ is the transition function $Q\times\Sigma_\lambda\times \Gamma_\lambda \rightarrow \mathcal{P}(Q\times\Gamma_\lambda)$.
+    \item $q_i$ is the initial state, $q_i \in Q$
+    \item $z_i$ is the initial stack symbol, $z_i \in \Gamma$
+    \item $Q_f$ is the finite set of accepted states.
+\end{itemize}
+
+\paragraph{Over All State of a \pda.} The overall state of a \pda\, is the current state $q_n$ with the contents of the stack $S$. Formally, it is given by the 2-tuple:
+
+\[
+    (q_n,S)\in Q\times\Gamma^*
+\]
+
+from this definition, the initial state of a \pda\, is given by $(q_i,z_i)$.
+
+\subsection{The Behavior of the \pda}
+
+The \blue{transitions} in the  \blue{state diagram} of a \pda\, is in the form of:
+\[
+    s,t\to c
+\]
+Where,
+\begin{itemize}
+    \item $s$ is the input symbol (the symbol we're going to read)
+    \item $t$ is the top stack symbol (what we \textit{should} \texttt{Pop}$(S)$)
+    \item $c$ is the push symbol (what we \texttt{Push}$(S,c)$
+\end{itemize}
+
+The \blue{empty string} $\lambda$ has some special characteristics in the context of a \pda:
+\begin{enumerate}
+    \item $\epsilon$ as the input symbol, does not consume any character in the input string.
+    \item $\epsilon$ as the top stack symbol, does not perform \texttt{Pop}$(S)$.
+    \item $\epsilon$ as the push symbol, does not perform \texttt{Push}$(S,c)$.
+\end{enumerate}
+
+We complete the transition (move from $q_0$ to $q_i$) if the following conditions are met:
+\begin{enumerate}
+    \item We can read the input symbol $s$
+    \item We can \texttt{Pop}$(S)$
+\end{enumerate}
+
+Notice that since the stack is part of the transition of a \pda\, if the stack is empty. Then, the \textbf{\pda\, hangs itself} (yes that is the technical term), or the computation stops.
+
+\subsection{Constructing a \pda}
+
+\begin{itemize}
+    \item \textbf{Symbol Matching:} Identify what symbol needs to be matched; identify when to \textsc{Push} and \textsc{Pop}.
+    \item \textbf{Initializing a Checker:} Push arbitrary symbols like to aid in matching the numerical constraints of the symbol. For instance: we can have the transition $\lambda,\lambda\to \bot$ at the star and $\epsilon,\bot\to\lambda$ at the end going to the accept state, to ensure that the numerical constraint was met.
+\end{itemize}
+
+\begin{ex}
+    Construct the \pda\, for $L = \{0^n1^n|n\geq0\}$
+\end{ex}
+
+We first notice that this will accept the empty string, as when $n=0:0^01^0\equiv\epsilon$, so there must be $\epsilon$-moves to the final string. So, we need to create a \blue{Bottom of Stack Symbol}. So,
+
+\[
+    \delta(q_0,\epsilon,\epsilon) = (q_1, \bot)
+\]
+
+
+Now, we see that we need to count the occurrences of 0's and 1's, so let's establish the rule:
+\begin{itemize}
+    \item \textsc{Push} when we read a 0
+    \item \textsc{Pop} when we read a 1
+\end{itemize}
+
+We push 0's since the array of 0's comes before the array of 1's; recall that the \pda\, will hang itself if we call \textsc{Pop} but $S=\emptyset$). Since this 0's can repeat multiple times, it will have a transition going to itself if we read a 0. So, we create another transition:
+
+\[
+    \delta(q_1, 0, \epsilon) = (q_1, 0)
+\]
+
+Now, without a stimulus, we need to go to our "counter state" for 1's, we use the same concept used for the transition of 0's:
+
+\[
+\delta(q_1, \epsilon, \epsilon) = (q_2, \epsilon)
+\delta(q_2, 1, 0) = (q_2, \epsilon)
+\]
+
+Finally, we need another $\epsilon$ transition to go to the final state. We use the checker symbol $\bot$ to check if we the number of pushes we did is equal to the number of pops.
+
+\[
+\delta(q_2, \epsilon, \bot) = (q_f, \epsilon)
+\]
+
+Therefore, this \pda\, matches the language $L=\{0^n1^n|n\geq0\}$.
+
+\begin{align*}
+    \delta(q_0,\epsilon,\epsilon) = (q_1, \bot)  \\ 
+    \delta(q_1, 0, \epsilon) = (q_1, 0) \\ 
+    \delta(q_1, \epsilon, \epsilon) = (q_2, \epsilon) \\ 
+    \delta(q_2, 1, 0) = (q_2, \epsilon) \\ 
+    \delta(q_2, \epsilon, \bot) = (q_f, \epsilon)
+\end{align*}
+
+\begin{ex}
+    Construct the \pda\, that accepts \textsc{Even-Palindromes}.
+\end{ex}
+
+We see that a palindrome is any string $s=kk^R$ where $|k|=\frac{|s|}{2}$.
+
+We first create the bottom stack marker:
+
+\subsection{\pda\, to \texttt{CFG} Conversion}

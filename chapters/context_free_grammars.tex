@@ -34,6 +34,10 @@ A \textbf{Context-Free Language} is another type of model of computation that ca
     Given two sentential forms $w$ and $w^\prime$, if $w$ can be transformed to $w^\prime$ using one production rule. Therefore, $w^\prime$ is \textbf{immediately derivable} from $w$, or $w\Rightarrow w^\prime$.
 \end{defn}
 
+\begin{defn}
+    A sentential form that is composed of all \blue{terminal symbols} is a \textbf{sentence} $\Sigma \overset{*}{\Rightarrow} w\in L(G)$.
+\end{defn}
+
 \paragraph{Formal Definition of a Context-Free Language.} The language of $G=\left(V,\Sigma,R,S\right)$, then $L(G)=\left\{s\in\Sigma|S\overset{*}{\Rightarrow}w\right\}$. It is the set of all terminal-symbol strings derivable from the start symbol.  A language $L$ is a Context-Free Language (CFL) if it meets the criteria: 
 
 \[
@@ -50,7 +54,7 @@ A \textbf{Context-Free Language} is another type of model of computation that ca
     \item The child.
 \end{itemize}
 
-Solution to example 1, we first determine the general structure of $G$. We see that a sentence contains two words. Denote the first word in the sentence as \textsc{Article} and the second word be \textsc{Noun}. It follows that we have the sentence structure
+We first determine the general structure of $G$. We see that a sentence contains two words. Denote the first word in the sentence as \textsc{Article} and the second word be \textsc{Noun}. It follows that we have the sentence structure
 
 \[
     S\to \textsc{Article} \cdot p \cdot \textsc{ Noun}
@@ -75,3 +79,30 @@ Then, we can now create the production rules for $G$:
          $p \to$                & " " 
     \end{tabular}
 \end{center}
+
+\subsection{Parse Trees and Ambiguity}
+
+A \blue{specific derivation} of a string from a grammar $G$ can be represented as a parse tree.
+
+\begin{defn}
+    A parse tree is a tree-structure where the root element is the String structure that branches out for every \blue{non-terminal symbol} in the derived string. See \ref{parse_tree_sample} for an example.
+\end{defn}
+
+\begin{figure}
+    \centering
+    \label{parse_tree_sample}
+    \includegraphics[width=0.75\linewidth]{images/parse_tree_sample.jpg}
+\end{figure}
+
+\begin{defn}
+    Suppose we have a grammar $G$ has the sentence structure $S=R_1 R_2$ which has two \blue{productions}: $R_1 \to 0R_11 | 01$ and $R_2 \to 1R_2\texttt{x} | 1\texttt{x}$.
+
+    \begin{enumerate}
+        \item The \textbf{leftmost derivation} is the derivation which primarily expands the leftmost non-terminal symbols for each production.
+        \item The \textbf{rightmost derivation} is the derivation which primarily expands the rightmost non-terminal symbols for each production.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    A grammar $G$ is ambiguous if and only if $\exists w\in L(G)$ has multiple \blue{leftmost} derivations.
+\end{defn}
