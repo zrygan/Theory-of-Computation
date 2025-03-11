@@ -13,7 +13,7 @@
 \newtheorem{ex}{Example}
 
 \definecolor{cyanon20}{rgb}{0.0, 1.0, 1.0} % Define cyan color
-\newtcolorbox[]{zbox}[1][]{
+\newtcolorbox[]{question_box}[1][]{
   colframe=black,                
   colback=cyan!20,               
   boxrule=0.2mm,                 
@@ -40,6 +40,10 @@
 
 \tableofcontents
 
+\include{chapters/regular_closure_properties}
 \include{chapters/pumping_lemma}
+\include{chapters/context_free_grammars}
+\include{chapters/pushdown_automata}
+\include{chapters/problems}
 
 \end{document}
